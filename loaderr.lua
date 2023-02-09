@@ -1,4 +1,4 @@
-register_key = getrenv().Config.Key;
+script_key = getrenv().Config.Key;
 
 ([[
                 This script has been licensed using Luarmor

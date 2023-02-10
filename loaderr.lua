@@ -8,7 +8,7 @@ script_key = getrenv().Config.Key;
             every single script that has been licensed with Luarmor
 
         Luarmor v3.3a for Roblox, #1 lua whitelisting system by Federal#9999
-				   https://luarmor.net/
+                   https://luarmor.net/
 
       _   _                 _   __  __           _     _          _ 
      | | | | ___   ___   __| | |  \/  | ___   __| | __| | ___  __| |

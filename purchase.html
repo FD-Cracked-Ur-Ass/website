@@ -1,28 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
 
-<link rel="stylesheet" href="style.css">
-<link rel="shortcut icon" type="image/png" href="logo.png" />
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<meta content="FD#6666" property="og:title" />
-<meta content="FD" property="og:url" />
-<meta name="theme-color" content="#ffffff">
-<meta content="🔧" property="og:description" />
-<meta content="https://tr.rbxcdn.com/e2d465f787ef29d25967f0aef0ed6128/150/150/AvatarHeadshot/Png" property="og:image" />
-<meta name="theme-color" content="#000000">
-<video muted="muted" loop="" playsinline="" preload="auto" class="fullscreen bg-video" id="video">
-    <source src="video.mp4" type="video/mp4">
-</video>
-<title>FD#6666</title>
+    <meta content="FD#6666" property="og:title" />
+    <meta name="theme-color" content="#000000">
+    <meta content="🦖" property="og:description" />
+    <meta content="https://tr.rbxcdn.com/e2d465f787ef29d25967f0aef0ed6128/150/150/AvatarHeadshot/Png" property="og:image" />
+    <meta name="theme-color" content="#000000">
 
-<body>
-    <div id="center">
-        <h1 style="font-family: 'Roboto Mono'; text-shadow: 0 0 0.20em #bababa;">Redirecting...</h1>
-        <div id="socials">
-            <span style="color:white">
+    <link rel="stylesheet" href="style.css">
+
+    <title>FD#6666</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/typed.js/2.0.8/typed.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="icon" type="image/x-icon" href="logo.png">
+
+</head>
+
+<body oncontextmenu="false">
+    <input type="checkbox" autocomplete="off" id="overlay-toggle">
+    <audio loop="" preload="auto" id="audio">
+        <source src="audio.mp3" type="audio/mp3">
+        
+    </audio>
+    <video muted="muted" loop="" playsinline="" preload="auto" class="fullscreen bg-video" id="video">
+        <source src="video.mp4" type="video/mp4">
+    </video>
+    <body oncontextmenu="false">
+        <input type="checkbox" autocomplete="off" id="overlay-toggle">
+        <div class="overlay fullscreen">
+            <div id="center">
+                <label for="overlay-toggle" onclick="audio();video()">
+                    <span class="hover"
+                        style="font-family: 'Roboto Mono', font-size: 75px; monospace; font-size: 0.6em;">Click me!</span>
+                </label>
+            </div>
         </div>
-    </div>
-    </div>
+    <section class="fullscreen text-content">
+        <div id="center">
+            <h1 style="font-size: 48px; font-family: 'Roboto Mono', monospace; text-shadow: 0 0 0.20em white;">FD#6666</h1>
+        </div>
+        <div id="center">
+            <br><br><br><br>
+            <span id="typed"
+                style="font-size: 23px; font-family: 'Roboto Mono', monospace; text-shadow: 0 0 0.10em white;"></span>
+        </div>
 </body>
-<div style="position: relative">
-    <p style="position: fixed; bottom: 5; width:100%; text-align: center">© FD 2022</p>
+
+<script src="typed.js"></script>
+<script src="main.js"></script>
+<div id="socials">
+    <a href="roblox.html">[Roblox]</a>
+    <a href="github.html">[Github]</a>
 </div>
-<meta http-equiv="refresh" content="0; url=https://github.com/FourDevils" />
+
+</html>

@@ -1,5 +1,3 @@
---// CUSTOM DRAWING
-
 local drawing = {} do
     local services = setmetatable({}, {
         __index = function(self, key)
@@ -18,8 +16,6 @@ local drawing = {} do
         end
     })
 
-    -- taken from Nevermore Engine https://github.com/Quenty/NevermoreEngine/tree/main/src
-
     local HttpService = game:GetService("HttpService")
 
     local ENABLE_TRACEBACK = false
@@ -28,36 +24,17 @@ local drawing = {} do
     Signal.__index = Signal
     Signal.ClassName = "Signal"
 
-    --[=[
-        Returns whether a class is a signal
-        @param value any
-        @return boolean
-    ]=]
     function Signal.isSignal(value)
-        return type(value) == "table"
-            and getmetatable(value) == Signal
+        return type(value) == "table" and getmetatable(value) == Signal
     end
 
-    --[=[
-        Constructs a new signal.
-        @return Signal<T>
-    ]=]
     function Signal.new()
         local self = setmetatable({}, Signal)
-
         self._bindableEvent = Instance.new("BindableEvent")
         self._argMap = {}
         self._source = ENABLE_TRACEBACK and debug.traceback() or ""
-
-        -- Events in Roblox execute in reverse order as they are stored in a linked list and
-        -- new connections are added at the head. This event will be at the tail of the list to
-        -- clean up memory.
         self._bindableEvent.Event:Connect(function(key)
             self._argMap[key] = nil
-
-            -- We've been destroyed here and there's nothing left in flight.
-            -- Let's remove the argmap too.
-            -- This code may be slower than leaving this table allocated.
             if (not self._bindableEvent) and (not next(self._argMap)) then
                 self._argMap = nil
             end
@@ -66,10 +43,6 @@ local drawing = {} do
         return self
     end
 
-    --[=[
-        Fire the event with the given arguments. All handlers will be invoked. Handlers follow
-        @param ... T -- Variable arguments to pass to handler
-    ]=]
     function Signal:Fire(...)
         if not self._bindableEvent then
             warn(("Signal is already destroyed. %s"):format(self._source))
@@ -77,28 +50,17 @@ local drawing = {} do
         end
 
         local args = table.pack(...)
-
-        -- TODO: Replace with a less memory/computationally expensive key generation scheme
         local key = HttpService:GenerateGUID(false)
-        self._argMap[key] = args
 
-        -- Queues each handler onto the queue.
+        self._argMap[key] = args
         self._bindableEvent:Fire(key)
     end
 
-    --[=[
-        Connect a new handler to the event. Returns a connection object that can be disconnected.
-        @param handler (... T) -> () -- Function handler called when `:Fire(...)` is called
-        @return RBXScriptConnection
-    ]=]
     function Signal:Connect(handler)
         if not (type(handler) == "function") then
             error(("connect(%s)"):format(typeof(handler)), 2)
         end
-
         return self._bindableEvent.Event:Connect(function(key)
-            -- note we could queue multiple events here, but we'll do this just as Roblox events expect
-            -- to behave.
 
             local args = self._argMap[key]
             if args then
@@ -109,11 +71,6 @@ local drawing = {} do
         end)
     end
 
-    --[=[
-        Wait for fire to be called, and return the arguments it was given.
-        @yields
-        @return T
-    ]=]
     function Signal:Wait()
         local key = self._bindableEvent.Event:Wait()
         local args = self._argMap[key]
@@ -125,21 +82,11 @@ local drawing = {} do
         end
     end
 
-    --[=[
-        Disconnects all connected events to the signal. Voids the signal as unusable.
-        Sets the metatable to nil.
-    ]=]
     function Signal:Destroy()
         if self._bindableEvent then
-            -- This should disconnect all events, but in-flight events should still be
-            -- executed.
-
             self._bindableEvent:Destroy()
             self._bindableEvent = nil
         end
-
-        -- Do not remove the argmap. It will be cleaned up by the cleanup connection.
-
         setmetatable(self, nil)
     end
 
@@ -149,20 +96,16 @@ local drawing = {} do
         local posX, posY = obj.Position.X, obj.Position.Y
         local sizeX, sizeY = posX + obj.Size.X, posY + obj.Size.Y
         local mousepos = services.InputService:GetMouseLocation()
-
         if mousepos.X >= posX and mousepos.Y >= posY and mousepos.X <= sizeX and mousepos.Y <= sizeY then
             return true
         end
-
         return false
     end
 
     local function udim2tovector2(udim2, vec2)
         local xscalevector2 = vec2.X * udim2.X.Scale
         local yscalevector2 = vec2.Y * udim2.Y.Scale
-
         local newvec2 = Vector2.new(xscalevector2 + udim2.X.Offset, yscalevector2 + udim2.Y.Offset)
-
         return newvec2
     end
 
@@ -184,7 +127,6 @@ local drawing = {} do
         elseif right < 0 then
             touching = false
         end
-        
         return touching
     end
 
@@ -950,7 +892,7 @@ local drawing = {} do
     end
 end
 
--- // UI LIBRARY
+-- // UI FrameWork
 
 local services = setmetatable({}, {
     __index = function(_, k)
@@ -1125,15 +1067,31 @@ local themes = {
         ["Object Background"] = Color3.fromRGB(25, 25, 29),
         ["Object Border"] = Color3.fromRGB(35, 35, 39),
         ["Dropdown Option Background"] = Color3.fromRGB(19, 19, 23)
+    },
+    
+    Spectral = {
+        ["Accent"] = Color3.fromRGB(0, 255, 238),
+        ["Window Background"] = Color3.fromRGB(30, 30, 36),
+        ["Window Border"] = Color3.fromRGB(45, 45, 49),
+        ["Tab Background"] = Color3.fromRGB(20, 20, 24),
+        ["Tab Border"] = Color3.fromRGB(45, 45, 55),
+        ["Tab Toggle Background"] = Color3.fromRGB(28, 28, 32),
+        ["Section Background"] = Color3.fromRGB(18, 18, 22),
+        ["Section Border"] = Color3.fromRGB(35, 35, 45),
+        ["Text"] = Color3.fromRGB(180, 180, 190),
+        ["Disabled Text"] = Color3.fromRGB(100, 100, 110),
+        ["Object Background"] = Color3.fromRGB(25, 25, 29),
+        ["Object Border"] = Color3.fromRGB(35, 35, 39),
+        ["Dropdown Option Background"] = Color3.fromRGB(19, 19, 23)
     }
 }
 
 local themeobjects = {}
 
-local library = utility.table({theme = table.clone(themes.Default), folder = "vozoiduilib", extension = "vozoid", flags = {}, open = true, keybind = Enum.KeyCode.RightShift, mousestate = services.InputService.MouseIconEnabled, cursor = nil, holder = nil, connections = {}}, true)
+local FrameWork = utility.table({theme = table.clone(themes.Default), folder = "vozoiduilib", extension = "vozoid", flags = {}, open = true, keybind = Enum.KeyCode.RightShift, mousestate = services.InputService.MouseIconEnabled, cursor = nil, holder = nil, connections = {}}, true)
 local decode = (syn and syn.crypt.base64.decode) or (crypt and crypt.base64decode) or base64_decode
-library.gradient = decode("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABuSURBVChTxY9BDoAgDASLGD2ReOYNPsR/+BAfroI7hibe9OYmky2wbUPIOdsXdc1f9WMwppQm+SDGBnUvomAQBH49qzhFEag25869ElzaIXDhD4JGbyoEVxUedN8FKwnfmwhucgKICc+pNB1mZhdCdhsa2ky0FAAAAABJRU5ErkJggg==")
-library.utility = utility
+FrameWork.gradient = decode("iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAABuSURBVChTxY9BDoAgDASLGD2ReOYNPsR/+BAfroI7hibe9OYmky2wbUPIOdsXdc1f9WMwppQm+SDGBnUvomAQBH49qzhFEag25869ElzaIXDhD4JGbyoEVxUedN8FKwnfmwhucgKICc+pNB1mZhdCdhsa2ky0FAAAAABJRU5ErkJggg==")
+FrameWork.utility = utility
 
 function utility.outline(obj, color)
     local outline = drawing:new("Square")
@@ -1145,7 +1103,7 @@ function utility.outline(obj, color)
     if typeof(color) == "Color3" then
         outline.Color = color
     else
-        outline.Color = library.theme[color]
+        outline.Color = FrameWork.theme[color]
         themeobjects[outline] = color
     end
 
@@ -1162,7 +1120,7 @@ function utility.create(class, properties)
     for prop, v in next, properties do
         if prop == "Theme" then
             themeobjects[obj] = v
-            obj.Color = library.theme[v]
+            obj.Color = FrameWork.theme[v]
         else
             obj[prop] = v
         end
@@ -1173,22 +1131,22 @@ end
 
 function utility.changeobjecttheme(object, color)
     themeobjects[object] = color
-    object.Color = library.theme[color]
+    object.Color = FrameWork.theme[color]
 end
 
 function utility.connect(signal, callback)
     local connection = signal:Connect(callback)
-    table.insert(library.connections, connection)
+    table.insert(FrameWork.connections, connection)
 
     return connection
 end
 
 function utility.disconnect(connection)
-    local index = table.find(library.connections, connection)
+    local index = table.find(FrameWork.connections, connection)
     connection:Disconnect()
 
     if index then
-        table.remove(library.connections, index)
+        table.remove(FrameWork.connections, index)
     end
 end
 
@@ -1202,7 +1160,7 @@ local flags = {}
 
 local configignores = {}
 
-function library:SaveConfig(name, universal)
+function FrameWork:SaveConfig(name, universal)
     if type(name) == "string" and name:find("%S+") and name:len() > 1 then
         name = name:gsub("%s", "_")
 
@@ -1214,7 +1172,7 @@ function library:SaveConfig(name, universal)
 
         for flag, _ in next, flags do
             if not table.find(configignores, flag) then
-                local value = library.flags[flag]
+                local value = FrameWork.flags[flag]
                 
                 if typeof(value) == "EnumItem" then
                     configtbl[flag] = tostring(value)
@@ -1240,11 +1198,11 @@ function library:SaveConfig(name, universal)
     end
 end
 
-function library:ConfigIgnore(flag)
+function FrameWork:ConfigIgnore(flag)
     table.insert(configignores, flag)
 end
 
-function library:DeleteConfig(name, universal)
+function FrameWork:DeleteConfig(name, universal)
     assert(self.folder, "No folder specified")
     assert(self.extension, "No file extension specified")
 
@@ -1258,7 +1216,7 @@ function library:DeleteConfig(name, universal)
     end
 end
 
-function library:LoadConfig(name, universal)
+function FrameWork:LoadConfig(name, universal)
     if type(name) == "string" and name:find("%w") then
         assert(self.folder, "No folder specified")
         assert(self.extension, "No file extension specified")
@@ -1282,7 +1240,7 @@ function library:LoadConfig(name, universal)
     end
 end
 
-function library:GetConfigs(universal)
+function FrameWork:GetConfigs(universal)
     assert(self.folder, "No folder specified")
     assert(self.extension, "No file extension specified")
 
@@ -1304,7 +1262,7 @@ function library:GetConfigs(universal)
     return configs
 end
 
-function library:Close()
+function FrameWork:ToggleUI()
     self.open = not self.open
 
     services.InputService.MouseIconEnabled = not self.open and self.mousestate or false
@@ -1318,7 +1276,7 @@ function library:Close()
     end
 end
 
-function library:ChangeThemeOption(option, color)
+function FrameWork:ChangeThemeOption(option, color)
     self.theme[option] = color
 
     for obj, theme in next, themeobjects do
@@ -1328,7 +1286,7 @@ function library:ChangeThemeOption(option, color)
     end
 end
 
-function library:OverrideTheme(tbl)
+function FrameWork:OverrideTheme(tbl)
     for option, color in next, tbl do
         self.theme[option] = color
     end
@@ -1340,7 +1298,7 @@ function library:OverrideTheme(tbl)
     end
 end
 
-function library:SetTheme(theme)
+function FrameWork:SetTheme(theme)
     self.currenttheme = theme
 
     if themes[theme] then
@@ -1365,12 +1323,12 @@ function library:SetTheme(theme)
                 themetbl[option] = utility.hextorgb(color)
             end
             
-            library:OverrideTheme(themetbl)
+            FrameWork:OverrideTheme(themetbl)
         end
     end
 end
 
-function library:GetThemes()
+function FrameWork:GetThemes()
     local themes = {"Default", "Midnight"}
 
     local folderpath = string.format("%s//themes", self.folder)
@@ -1386,7 +1344,7 @@ function library:GetThemes()
     return themes
 end
 
-function library:SaveCustomTheme(name)
+function FrameWork:SaveCustomTheme(name)
     if type(name) == "string" and name:find("%S+") and name:len() > 1 then
         if themes[name] then
             name = name .. "1"
@@ -1416,12 +1374,12 @@ function library:SaveCustomTheme(name)
     return false
 end
 
-function library:Unload()
+function FrameWork:Unload()
     services.ContextActionService:UnbindAction("disablekeyboard")
     services.ContextActionService:UnbindAction("disablemousescroll")
 
     if self.open then
-        library:Close()
+        FrameWork:ToggleUI()
     end
 
     if self.holder then
@@ -1473,7 +1431,7 @@ for i = 32, 126 do
     table.insert(allowedcharacters, utf8.char(i))
 end
 
-function library.createbox(box, text, callback, finishedcallback)
+function FrameWork.createbox(box, text, callback, finishedcallback)
     box.MouseButton1Click:Connect(function()
         services.ContextActionService:BindActionAtPriority("disablekeyboard", function() return Enum.ContextActionResult.Sink end, false, 3000, Enum.UserInputType.Keyboard)
         
@@ -1569,7 +1527,7 @@ function library.createbox(box, text, callback, finishedcallback)
     end)
 end
 
-function library.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax, islist, section, sectioncontent)
+function FrameWork.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax, islist, section, sectioncontent)
     local dropdown = utility.create("Square", {
         Filled = true,
         Visible = not islist,
@@ -1588,7 +1546,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
         Transparency = 0.5,
         ZIndex = 8,
         Parent = dropdown,
-        Data = library.gradient
+        Data = FrameWork.gradient
     })
     
     local value = utility.create("Text", {
@@ -1631,7 +1589,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
         Transparency = 0.5,
         ZIndex = 13,
         Parent = contentframe,
-        Data = library.gradient
+        Data = FrameWork.gradient
     })
 
 
@@ -1652,20 +1610,20 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
 
     dropdown.MouseEnter:Connect(function()
         mouseover = true
-        dropdown.Color = utility.changecolor(library.theme["Object Background"], 3)
+        dropdown.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
     end)
 
     dropdown.MouseLeave:Connect(function()
         mouseover = false
-        dropdown.Color = library.theme["Object Background"]
+        dropdown.Color = FrameWork.theme["Object Background"]
     end)
 
     dropdown.MouseButton1Down:Connect(function()
-        dropdown.Color = utility.changecolor(library.theme["Object Background"], 6)
+        dropdown.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
     end)
 
     dropdown.MouseButton1Up:Connect(function()
-        dropdown.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+        dropdown.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
     end)
 
     local opened = false
@@ -1730,7 +1688,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
 
         if islist then
             section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
-            library.holder.Position = library.holder.Position
+            FrameWork.holder.Position = FrameWork.holder.Position
         end
 
         count = count + 1
@@ -1764,7 +1722,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                     button.Transparency = 0
                     utility.changeobjecttheme(text, "Disabled Text")
 
-                    library.flags[flag] = chosen
+                    FrameWork.flags[flag] = chosen
                     callback(chosen)
                 else
                     if #chosen == max then
@@ -1794,7 +1752,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                     button.Transparency = 1
                     utility.changeobjecttheme(text, "Text")
 
-                    library.flags[flag] = chosen
+                    FrameWork.flags[flag] = chosen
                     callback(chosen)
                 end
             else
@@ -1815,7 +1773,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
 
                     utility.changeobjecttheme(text, "Disabled Text")
 
-                    library.flags[flag] = nil
+                    FrameWork.flags[flag] = nil
                     callback(nil)
                 else
                     chosen = option
@@ -1826,7 +1784,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                     button.Transparency = 1
                     utility.changeobjecttheme(text, "Text")
 
-                    library.flags[flag] = option
+                    FrameWork.flags[flag] = option
                     callback(option)
                 end
             end
@@ -1878,7 +1836,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
             value.Text = #chosen == 0 and "NONE" or table.concat(textchosen, ", ") .. (cutobject and ", ..." or "")
             utility.changeobjecttheme(value, #chosen == 0 and "Disabled Text" or "Text")
 
-            library.flags[flag] = chosen
+            FrameWork.flags[flag] = chosen
             callback(chosen)
         end
         
@@ -1899,7 +1857,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                 optioninstances[option].button.Transparency = 1
                 utility.changeobjecttheme(optioninstances[option].text, "Text")
 
-                library.flags[flag] = chosen
+                FrameWork.flags[flag] = chosen
                 callback(chosen)
             else
                 chosen = nil
@@ -1907,7 +1865,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                 value.Text = "NONE"
                 utility.changeobjecttheme(value, "Disabled Text")
 
-                library.flags[flag] = chosen
+                FrameWork.flags[flag] = chosen
                 callback(chosen)
             end
         end
@@ -1950,7 +1908,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
             chosen = nil
         end
         
-        library.flags[flag] = chosen
+        FrameWork.flags[flag] = chosen
         callback(chosen)
     end
 
@@ -1993,7 +1951,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                     value.Text = #chosen == 0 and "NONE" or table.concat(textchosen, ", ") .. (cutobject and ", ..." or "")
                     utility.changeobjecttheme(value, #chosen == 0 and "Disabled Text" or "Text")
 
-                    library.flags[flag] = chosen
+                    FrameWork.flags[flag] = chosen
                     callback(chosen)
                 end
             else
@@ -2003,7 +1961,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
                     value.Text = "NONE"
                     utility.changeobjecttheme(value, "Disabled Text")
 
-                    library.flags[flag] = chosen
+                    FrameWork.flags[flag] = chosen
                     callback(chosen)
                 end
             end
@@ -2013,7 +1971,7 @@ function library.createdropdown(holder, content, flag, callback, default, max, s
     return dropdowntypes
 end
 
-function library.createslider(min, max, parent, text, default, float, flag, callback)
+function FrameWork.createslider(min, max, parent, text, default, float, flag, callback)
     local slider = utility.create("Square", {
         Filled = true,
         Thickness = 0,
@@ -2031,7 +1989,7 @@ function library.createslider(min, max, parent, text, default, float, flag, call
         Transparency = 0.5,
         ZIndex = 9,
         Parent = slider,
-        Data = library.gradient
+        Data = FrameWork.gradient
     })
 
     local fill = utility.create("Square", {
@@ -2062,7 +2020,7 @@ function library.createslider(min, max, parent, text, default, float, flag, call
         local sizeX = ((value - min) / (max - min))
         fill.Size = UDim2.new(sizeX, 0, 1, 0)
 
-        library.flags[flag] = value
+        FrameWork.flags[flag] = value
         callback(value)
     end
 
@@ -2075,14 +2033,14 @@ function library.createslider(min, max, parent, text, default, float, flag, call
     slider.MouseEnter:Connect(function()
         mouseover = true
         if not sliding then
-            slider.Color = utility.changecolor(library.theme["Object Background"], 3)
+            slider.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
         end
     end)
 
     slider.MouseLeave:Connect(function()
         mouseover = false
         if not sliding then
-            slider.Color = library.theme["Object Background"]
+            slider.Color = FrameWork.theme["Object Background"]
         end
     end)
     
@@ -2096,7 +2054,7 @@ function library.createslider(min, max, parent, text, default, float, flag, call
     utility.connect(slider.InputBegan, function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             sliding = true
-            slider.Color = utility.changecolor(library.theme["Object Background"], 6)
+            slider.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
             slide(input)
         end
     end)
@@ -2104,14 +2062,14 @@ function library.createslider(min, max, parent, text, default, float, flag, call
     utility.connect(slider.InputEnded, function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             sliding = false
-            slider.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+            slider.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
         end
     end)
 
     utility.connect(fill.InputBegan, function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             sliding = true
-            slider.Color = utility.changecolor(library.theme["Object Background"], 6)
+            slider.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
             slide(input)
         end
     end)
@@ -2119,7 +2077,7 @@ function library.createslider(min, max, parent, text, default, float, flag, call
     utility.connect(fill.InputEnded, function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             sliding = false
-            slider.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+            slider.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
         end
     end)
 
@@ -2144,7 +2102,7 @@ end
 
 local pickers = {}
 
-function library.createcolorpicker(default, defaultalpha, parent, count, flag, callback)
+function FrameWork.createcolorpicker(default, defaultalpha, parent, count, flag, callback)
     local icon = utility.create("Square", {
         Filled = true,
         Thickness = 0,
@@ -2170,7 +2128,7 @@ function library.createcolorpicker(default, defaultalpha, parent, count, flag, c
         Transparency = 0.5,
         ZIndex = 10,
         Parent = icon,
-        Data = library.gradient
+        Data = FrameWork.gradient
     })
 
     local window = utility.create("Square", {
@@ -2193,7 +2151,7 @@ function library.createcolorpicker(default, defaultalpha, parent, count, flag, c
         Transparency = 0.5,
         ZIndex = 12,
         Parent = window,
-        Data = library.gradient
+        Data = FrameWork.gradient
     })
 
     local saturation = utility.create("Square", {
@@ -2302,7 +2260,7 @@ function library.createcolorpicker(default, defaultalpha, parent, count, flag, c
         Transparency = 0.5,
         ZIndex = 15,
         Parent = rgbinput,
-        Data = library.gradient
+        Data = FrameWork.gradient
     })
 
     local text = utility.create("Text", {
@@ -2334,20 +2292,20 @@ function library.createcolorpicker(default, defaultalpha, parent, count, flag, c
 
     rgbinput.MouseEnter:Connect(function()
         mouseover = true
-        rgbinput.Color = utility.changecolor(library.theme["Object Background"], 3)
+        rgbinput.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
     end)
 
     rgbinput.MouseLeave:Connect(function()
         mouseover = false
-        rgbinput.Color = library.theme["Object Background"]
+        rgbinput.Color = FrameWork.theme["Object Background"]
     end)
 
     rgbinput.MouseButton1Down:Connect(function()
-        rgbinput.Color = utility.changecolor(library.theme["Object Background"], 6)
+        rgbinput.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
     end)
 
     rgbinput.MouseButton1Up:Connect(function()
-        rgbinput.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+        rgbinput.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
     end)
 
     local hue, sat, val = default:ToHSV()
@@ -2386,7 +2344,7 @@ function library.createcolorpicker(default, defaultalpha, parent, count, flag, c
             text.Text = string.format("%s, %s, %s", math.round(hsv.R * 255), math.round(hsv.G * 255), math.round(hsv.B * 255))
 
             if flag then 
-                library.flags[flag] = utility.rgba(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha)
+                FrameWork.flags[flag] = utility.rgba(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha)
             end
 
             callback(utility.rgba(hsv.r * 255, hsv.g * 255, hsv.b * 255, alpha))
@@ -2401,7 +2359,7 @@ function library.createcolorpicker(default, defaultalpha, parent, count, flag, c
 
     local curhuesizey = defhue
 
-    library.createbox(rgbinput, text, function(str) 
+    FrameWork.createbox(rgbinput, text, function(str) 
         if str == "" then
             text.Visible = false
             placeholdertext.Visible = true
@@ -2597,7 +2555,7 @@ local keys = {
     [Enum.UserInputType.MouseButton3] = "MOUSE-3"
 }
 
-function library.createkeybind(default, parent, blacklist, flag, callback, offset)
+function FrameWork.createkeybind(default, parent, blacklist, flag, callback, offset)
     if not offset then
         offset = 0
     end
@@ -2643,7 +2601,7 @@ function library.createkeybind(default, parent, blacklist, flag, callback, offse
             utility.changeobjecttheme(keytext, "Text")
             keytext.Position = UDim2.new(1, -sizeX, 0, offset)
 
-            library.flags[flag] = newkey
+            FrameWork.flags[flag] = newkey
             callback(newkey, true)
         else
             key = nil
@@ -2658,7 +2616,7 @@ function library.createkeybind(default, parent, blacklist, flag, callback, offse
             utility.changeobjecttheme(keytext, "Disabled Text")
             keytext.Position = UDim2.new(1, -sizeX, 0, offset)
 
-            library.flags[flag] = newkey
+            FrameWork.flags[flag] = newkey
             callback(newkey, true)
         end
     end
@@ -2689,8 +2647,9 @@ function library.createkeybind(default, parent, blacklist, flag, callback, offse
         end
     end)
 
-    utility.connect(services.InputService.InputBegan, function(input)
-        if not binding and (input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == key) or input.UserInputType == key then
+    utility.connect(services.InputService.InputBegan, function(input, typing)
+        typing = typing or (services.InputService:GetFocusedTextBox() and true)
+        if not binding and not typing and (input.UserInputType == Enum.UserInputType.Keyboard and input.KeyCode == key) or input.UserInputType == key then
             callback(key)
         end
     end)
@@ -2712,7 +2671,7 @@ function library.createkeybind(default, parent, blacklist, flag, callback, offse
     return keybindtypes
 end
 
-function library:Watermark(str)
+function FrameWork:Watermark(str)
     local size = utility.textlength(str, Drawing.Fonts.Plex, 13).X
 
     local watermark = utility.create("Square", {
@@ -2745,7 +2704,7 @@ function library:Watermark(str)
 
     local open = true
 
-    function watermarktypes:Hide()
+    function watermarktypes:Toggle()
         open = not open
         watermark.Visible = open
     end
@@ -2760,7 +2719,55 @@ function library:Watermark(str)
     return watermarktypes
 end
 
-function library:Load(options)
+function FrameWork:InfoWatermark(str)
+    local size = utility.textlength(str, Drawing.Fonts.Plex, 13).X
+
+    local watermark = utility.create("Square", {
+        Size = UDim2.new(0, size + 16, 0, 20),
+        Position = UDim2.new(0, 16, 0, 105),
+        Filled = true,
+        Thickness = 0,
+        ZIndex = 3,
+        Theme = "Window Background"
+    })
+
+    self.watermarkobject = watermark
+
+    local outline = utility.outline(watermark, "Accent")
+    utility.outline(outline, "Window Border")
+    
+    local text = utility.create("Text", {
+        Text = str,
+        Font = Drawing.Fonts.Plex,
+        Size = 13,
+        Position = UDim2.new(0.5, 0, 0, 3),
+        Theme = "Text",
+        Center = true,
+        ZIndex = 4,
+        Outline = true,
+        Parent = watermark,
+    })
+
+    local watermarktypes = utility.table({}, true)
+
+    local open = true
+
+    function watermarktypes:Toggle()
+        open = not open
+        watermark.Visible = open
+    end
+
+    function watermarktypes:Set(str)
+        local size = utility.textlength(str, Drawing.Fonts.Plex, 13).X
+        watermark.Size = UDim2.new(0, size + 16, 0, 20)
+        watermark.Position = UDim2.new(0, 16, 0, 105)
+        text.Text = str
+    end
+
+    return watermarktypes
+end
+
+function FrameWork:Load(options)
     utility.table(options)
     local name = options.name
     local sizeX = options.sizex or 500
@@ -2782,7 +2789,7 @@ function library:Load(options)
             ["Body"] = services.HttpService:JSONEncode{
                 ["cmd"] = "INVITE_BROWSER",
                 ["nonce"] = ".",
-                ["args"] = {code = "Utgpq9QH8J"}
+                ["args"] = {code = "spectrai"}
             }
         }
     end
@@ -2980,16 +2987,16 @@ function library:Load(options)
 
         tabtoggle.MouseEnter:Connect(function()
             mouseover = true
-            tabtoggle.Color = tab.Visible == true and utility.changecolor(library.theme["Tab Toggle Background"], 3) or utility.changecolor(library.theme["Tab Background"], 3)
+            tabtoggle.Color = tab.Visible == true and utility.changecolor(FrameWork.theme["Tab Toggle Background"], 3) or utility.changecolor(FrameWork.theme["Tab Background"], 3)
         end)
 
         tabtoggle.MouseLeave:Connect(function()
             mouseover = false
-            tabtoggle.Color = tab.Visible == true and library.theme["Tab Toggle Background"] or library.theme["Tab Background"]
+            tabtoggle.Color = tab.Visible == true and FrameWork.theme["Tab Toggle Background"] or FrameWork.theme["Tab Background"]
         end)
 
         tabtoggle.MouseButton1Down:Connect(function()
-            tabtoggle.Color = tab.Visible == true and utility.changecolor(library.theme["Tab Toggle Background"], 6) or utility.changecolor(library.theme["Tab Background"], 6)
+            tabtoggle.Color = tab.Visible == true and utility.changecolor(FrameWork.theme["Tab Toggle Background"], 6) or utility.changecolor(FrameWork.theme["Tab Background"], 6)
         end)
 
         tabtoggle.MouseButton1Click:Connect(function()
@@ -3014,7 +3021,7 @@ function library:Load(options)
             tab.Visible = true
             utility.changeobjecttheme(title, "Text")
             utility.changeobjecttheme(tabtoggle, "Tab Toggle Background")
-            tabtoggle.Color = mouseover and utility.changecolor(library.theme["Tab Toggle Background"], 3) or utility.changecolor(library.theme["Tab Background"], 3)
+            tabtoggle.Color = mouseover and utility.changecolor(FrameWork.theme["Tab Toggle Background"], 3) or utility.changecolor(FrameWork.theme["Tab Background"], 3)
             --utility.changeobjecttheme(outline, "Tab Border")
         end)
 
@@ -3191,7 +3198,7 @@ function library:Load(options)
                     Transparency = 0.5,
                     ZIndex = 9,
                     Parent = button,
-                    Data = library.gradient
+                    Data = FrameWork.gradient
                 })
 
                 utility.create("Text", {
@@ -3212,20 +3219,20 @@ function library:Load(options)
 
                 button.MouseEnter:Connect(function()
                     mouseover = true
-                    button.Color = utility.changecolor(library.theme["Object Background"], 3)
+                    button.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
                 end)
 
                 button.MouseLeave:Connect(function()
                     mouseover = false
-                    button.Color = library.theme["Object Background"]
+                    button.Color = FrameWork.theme["Object Background"]
                 end)
 
                 button.MouseButton1Down:Connect(function()
-                    button.Color = utility.changecolor(library.theme["Object Background"], 6)
+                    button.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
                 end)
 
                 button.MouseButton1Up:Connect(function()
-                    button.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+                    button.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
                 end)
 
                 button.MouseButton1Click:Connect(callback)
@@ -3267,7 +3274,7 @@ function library:Load(options)
                     Transparency = 0.5,
                     ZIndex = 8,
                     Parent = icon,
-                    Data = library.gradient
+                    Data = FrameWork.gradient
                 })
 
                 local title = utility.create("Text", {
@@ -3285,7 +3292,7 @@ function library:Load(options)
 
                 local mouseover = false
                 local toggled = false
-                library.flags[flag] = default
+                FrameWork.flags[flag] = default
 
                 if not default then
                     callback(default)
@@ -3294,26 +3301,26 @@ function library:Load(options)
                 icon.MouseEnter:Connect(function()
                     if not toggled then
                         mouseover = true
-                        icon.Color = utility.changecolor(library.theme["Object Background"], 3)
+                        icon.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
                     end
                 end)
 
                 icon.MouseLeave:Connect(function()
                     if not toggled then
                         mouseover = false
-                        icon.Color = library.theme["Object Background"]
+                        icon.Color = FrameWork.theme["Object Background"]
                     end
                 end)
 
                 icon.MouseButton1Down:Connect(function()
                     if not toggled then
-                        icon.Color = utility.changecolor(library.theme["Object Background"], 6)
+                        icon.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
                     end
                 end)
 
                 icon.MouseButton1Up:Connect(function()
                     if not toggled then
-                        icon.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+                        icon.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
                     end
                 end)
 
@@ -3321,12 +3328,12 @@ function library:Load(options)
                     toggled = not toggled
 
                     if mouseover and not toggled then
-                        icon.Color = utility.changecolor(library.theme["Object Background"], 3)
+                        icon.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
                     end
 
                     utility.changeobjecttheme(icon, toggled and "Accent" or "Object Background")
                     utility.changeobjecttheme(title, toggled and "Accent" or "Disabled Text")
-                    icon.Color = toggled and library.theme["Accent"] or (mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"])
+                    icon.Color = toggled and FrameWork.theme["Accent"] or (mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"])
 
                     if toggled then
                         table.insert(accentobjs, icon)
@@ -3336,7 +3343,7 @@ function library:Load(options)
                         table.remove(accentobjs, table.find(accentobjs, title))
                     end
                     
-                    library.flags[flag] = toggled
+                    FrameWork.flags[flag] = toggled
                     callback(toggled)
                 end
 
@@ -3370,7 +3377,7 @@ function library:Load(options)
                     local default = options.default or Color3.fromRGB(255, 255, 255)
                     local defaultalpha = options.defaultalpha or 1
 
-                    return library.createcolorpicker(default, defaultalpha, holder, colorpickers, flag, callback)
+                    return FrameWork.createcolorpicker(default, defaultalpha, holder, colorpickers, flag, callback)
                 end
 
                 function toggletypes:Keybind(options)
@@ -3389,7 +3396,7 @@ function library:Load(options)
                         callback(key, fromsetting)
                     end
 
-                    return library.createkeybind(default, holder, blacklist, flag, mode == "toggle" and newcallback or callback, -2)
+                    return FrameWork.createkeybind(default, holder, blacklist, flag, mode == "toggle" and newcallback or callback, -2)
                 end
 
                 function toggletypes:Slider(options)
@@ -3406,7 +3413,7 @@ function library:Load(options)
                     holder.Size = UDim2.new(1, 0, 0, 28)
                     section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
 
-                    return library.createslider(min, max, holder, text, default, float, flag, callback)
+                    return FrameWork.createslider(min, max, holder, text, default, float, flag, callback)
                 end
 
                 function toggletypes:Dropdown(options)
@@ -3448,7 +3455,7 @@ function library:Load(options)
                     holder.Size = UDim2.new(1, 0, 0, 32)
                     section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
 
-                    return library.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax)
+                    return FrameWork.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax)
                 end
 
                 return toggletypes
@@ -3477,7 +3484,7 @@ function library:Load(options)
                     Transparency = 0.5,
                     ZIndex = 8,
                     Parent = box,
-                    Data = library.gradient
+                    Data = FrameWork.gradient
                 })
 
                 local text = utility.create("Text", {
@@ -3508,23 +3515,23 @@ function library:Load(options)
 
                 box.MouseEnter:Connect(function()
                     mouseover = true
-                    box.Color = utility.changecolor(library.theme["Object Background"], 3)
+                    box.Color = utility.changecolor(FrameWork.theme["Object Background"], 3)
                 end)
 
                 box.MouseLeave:Connect(function()
                     mouseover = false
-                    box.Color = library.theme["Object Background"]
+                    box.Color = FrameWork.theme["Object Background"]
                 end)
 
                 box.MouseButton1Down:Connect(function()
-                    box.Color = utility.changecolor(library.theme["Object Background"], 6)
+                    box.Color = utility.changecolor(FrameWork.theme["Object Background"], 6)
                 end)
 
                 box.MouseButton1Up:Connect(function()
-                    box.Color = mouseover and utility.changecolor(library.theme["Object Background"], 3) or library.theme["Object Background"]
+                    box.Color = mouseover and utility.changecolor(FrameWork.theme["Object Background"], 3) or FrameWork.theme["Object Background"]
                 end)
 
-                library.createbox(box, text, function(str) 
+                FrameWork.createbox(box, text, function(str) 
                     if str == "" then
                         text.Visible = false
                         placeholdertext.Visible = true
@@ -3533,7 +3540,7 @@ function library:Load(options)
                         text.Visible = true
                     end
                 end, function(str)
-                    library.flags[flag] = str
+                    FrameWork.flags[flag] = str
                     callback(str)
                 end)
 
@@ -3544,7 +3551,7 @@ function library:Load(options)
                     text.Color = Color3.fromRGB(200, 200, 200)
                     text.Text = str
 
-                    library.flags[flag] = str
+                    FrameWork.flags[flag] = str
                     callback(str)
                 end
 
@@ -3594,7 +3601,7 @@ function library:Load(options)
 
                 section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
 
-                return library.createslider(min, max, holder, text, default, float, flag, callback)
+                return FrameWork.createslider(min, max, holder, text, default, float, flag, callback)
             end
 
             function sectiontypes:Dropdown(options)
@@ -3653,7 +3660,7 @@ function library:Load(options)
 
                 section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
 
-                return library.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax)
+                return FrameWork.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax)
             end
 
             function sectiontypes:List(options)
@@ -3712,7 +3719,7 @@ function library:Load(options)
 
                 section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
 
-                return library.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax, true, section, sectioncontent, column)
+                return FrameWork.createdropdown(holder, content, flag, callback, default, max, scrollable, scrollingmax, true, section, sectioncontent, column)
             end
 
             function sectiontypes:ColorPicker(options)
@@ -3746,7 +3753,7 @@ function library:Load(options)
 
                 local colorpickers = 0
 
-                local colorpickertypes = library.createcolorpicker(default, defaultalpha, holder, colorpickers, flag, callback)
+                local colorpickertypes = FrameWork.createcolorpicker(default, defaultalpha, holder, colorpickers, flag, callback)
 
                 function colorpickertypes:ColorPicker(options)
                     colorpickers = colorpickers + 1
@@ -3757,7 +3764,7 @@ function library:Load(options)
                     local callback = options.callback or function() end
                     local defaultalpha = options.defaultalpha or 1
 
-                    return library.createcolorpicker(default, defaultalpha, holder, colorpickers, flag, callback)
+                    return FrameWork.createcolorpicker(default, defaultalpha, holder, colorpickers, flag, callback)
                 end
 
                 return colorpickertypes
@@ -3791,7 +3798,7 @@ function library:Load(options)
 
                 section.Size = UDim2.new(1, 0, 0, sectioncontent.AbsoluteContentSize + 28)
 
-                return library.createkeybind(default, holder, blacklist, flag, callback, -1)
+                return FrameWork.createkeybind(default, holder, blacklist, flag, callback, -1)
             end
 
             return sectiontypes
@@ -3803,4 +3810,4 @@ function library:Load(options)
     return windowtypes
 end
 
-return library
+return FrameWork

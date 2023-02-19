@@ -6,7 +6,7 @@ local ESP = {
     BoxSize = Vector3.new(4,6,0),
     Color = Color3.fromRGB(0, 255, 238),
     FaceCamera = false,
-    Usernames = false,
+    Names = false,
     TeamColor = false,
     Thickness = 2,
     AttachShift = 1,
@@ -73,7 +73,7 @@ function ESP:GetPlrFromChar(char)
 	return plrs:GetPlayerFromCharacter(char)
 end
 
-function ESP:TogglingESP(bool)
+function ESP:Toggle(bool)
     self.Enabled = bool
     if not bool then
         for i,v in pairs(self.Objects) do
@@ -219,7 +219,7 @@ function boxBase:Update()
         self.Components.Quad.Visible = false
     end
 
-    if ESP.Usernames then
+    if ESP.Names then
         local TagPos, Vis5 = WorldToViewportPoint(cam, locs.TagPos.p)
         
         if Vis5 then

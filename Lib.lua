@@ -1732,7 +1732,7 @@ function library:Init(key)
             --
             function ToggleFunctions:AddKeybind(default_t)
                 callback_t = callback
-                default_t = default_t
+                default_t = default_t or nil
                 
                 local keybind = Instance.new("TextButton")
                 local keybindCorner = Instance.new("UICorner")

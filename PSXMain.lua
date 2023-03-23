@@ -1,3 +1,9 @@
+for i,v in pairs(game:GetDescendants()) do
+	if v:IsA("Sound") then
+		v:Destroy()
+	end
+end
+
 local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local FrameworkLibrary = require(game.ReplicatedStorage.Framework.Library)
@@ -271,18 +277,6 @@ while true do
 	if lockedCount == 0 then
 	    print('Unlocked All')
 	    break
-	end
-end
-
-for i,v in pairs(game.Workspace:GetDescendants()) do
-	if v:IsA("Sound") then
-		v:Destroy()
-	end
-end
-
-for i,v in pairs(game:GetDescendants()) do
-	if v:IsA("Sound") then
-		v:Destroy()
 	end
 end
 

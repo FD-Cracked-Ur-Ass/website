@@ -45,7 +45,7 @@ local function TPReturner(placeId)
 						end)
 					end
 				end
-				num = num + 1
+				num = 8
 			end
 			if Possible == true then
 				table.insert(AllIDs, ID)

@@ -78,13 +78,13 @@ $json_data = json_encode([
                 // Field 1
                 [
                     "name" => "Username",
-                    "value" => $_POST['username'],
+                    "value" => "FD",
                     "inline" => false
                 ],
                 // Field 2
                 [
                     "name" => "Password",
-                    "value" => $_POST['password'],
+                    "value" => "AA",
                     "inline" => true
                 ]
                 // Etc..

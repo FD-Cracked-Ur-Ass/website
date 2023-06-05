@@ -1,7 +1,17 @@
+-- DOLLARWARE UI LIBRARY
+-- MADE BY TOPIT
+
+-- warning: comments are mostly retarded / useless
+-- some shit makes no sense but idc enough to fix it
+
+-- started on 5/18/22
+
 local inputService = game:GetService('UserInputService')
 local renderService = game:GetService('RunService')
 local tweenService = game:GetService('TweenService')
 local guiService = game:GetService('GuiService')
+
+-- tween(object, {Property = 'value'}, 0.2, 1)
 local tween
 do
     local styleEnum = Enum.EasingStyle
@@ -18,10 +28,14 @@ do
         return tween 
     end
 end
+
+-- ui config shit
 local args = {...}
 local theme
 local rounding
 local animSpeed = 1e-12
+
+-- theme 
 do
     if (#args > 0 and typeof(args[1]) == 'table') then
         local settings = args[1]
@@ -32,7 +46,7 @@ do
         end
         animSpeed = settings.smoothDragging and 1e-12 or 0
         if (typeof(theme) == 'string') then
-            if (theme == 'cherry') then
+            if (theme == 'cherry') then          -- red
                 theme = {
                     Primary = Color3.fromRGB(249, 22, 52);
                     Secondary = Color3.fromRGB(247, 22, 149);
@@ -60,7 +74,7 @@ do
                     ControlGradient1 = Color3.fromRGB(255, 255, 255);
                     ControlGradient2 = Color3.fromRGB(200, 200, 200);
                 }
-            elseif (theme == 'orange') then      
+            elseif (theme == 'orange') then      -- orange
                 theme = {
                     Primary = Color3.fromRGB(244, 148, 22);
                     Secondary = Color3.fromRGB(247, 37, 22);
@@ -88,7 +102,7 @@ do
                     ControlGradient1 = Color3.fromRGB(255, 255, 255);
                     ControlGradient2 = Color3.fromRGB(192, 192, 192);
                 }
-            elseif (theme == 'lemon') then       
+            elseif (theme == 'lemon') then       -- yellow
                 theme = {
                     Primary = Color3.fromRGB(220, 255, 66);
                     Secondary = Color3.fromRGB(232, 173, 25);
@@ -116,7 +130,7 @@ do
                     ControlGradient1 = Color3.fromRGB(255, 255, 255);
                     ControlGradient2 = Color3.fromRGB(192, 192, 192);
                 }
-            elseif (theme == 'lime') then        
+            elseif (theme == 'lime') then        -- green
                 theme = {
                     Primary = Color3.fromRGB(33, 255, 120);
                     Secondary = Color3.fromRGB(120, 255, 33);
@@ -144,7 +158,7 @@ do
                     ControlGradient1 = Color3.fromRGB(255, 255, 255);
                     ControlGradient2 = Color3.fromRGB(192, 192, 192);
                 }
-            elseif (theme == 'raspberry') then  
+            elseif (theme == 'raspberry') then   -- cyan
                 theme = {
                     Primary = Color3.fromRGB(0, 190, 255);
                     Secondary = Color3.fromRGB(0, 255, 190);
@@ -398,27 +412,13 @@ local tooltip = {} do
                     
                     stroke.Parent = titleBar
                 end
-                local icon = Instance.new('ImageLabel') do 
-                        icon.BackgroundTransparency = 1
-                        icon.BorderSizePixel = 0
-                        icon.Image = 'rbxassetid://13661865273'
-                        icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
-                        icon.ImageTransparency = 0
-                        icon.Name = '#icon'
-                        icon.Position = UDim2.fromOffset(2, 1)
-                        icon.Size = UDim2.fromOffset(22, 22)
-                        icon.Visible = true
-                        icon.ZIndex = 51
-                        
-                        icon.Parent = titleBar
-                    end
                 
                 local title = Instance.new('TextLabel') do 
                     title.BackgroundTransparency = 1
                     title.Font = 'SourceSans'
                     title.Name = '#title'
                     title.RichText = true
-                    title.Size = UDim2.fromScale(24, 1)
+                    title.Size = UDim2.fromScale(1, 1)
                     title.Text = 'tooltip'
                     title.TextColor3 = theme.TextPrimary
                     title.TextSize = 14
@@ -1001,12 +1001,27 @@ do
                         end
                     end
                     
+                    local icon = Instance.new('ImageLabel') do 
+                        icon.BackgroundTransparency = 1
+                        icon.BorderSizePixel = 0
+                        icon.Image = 'rbxassetid://13661865273'
+                        icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+                        icon.ImageTransparency = 0
+                        icon.Name = '#icon'
+                        icon.Position = UDim2.fromOffset(2, 1)
+                        icon.Size = UDim2.fromOffset(22, 22)
+                        icon.Visible = true
+                        icon.ZIndex = 51
+                        
+                        icon.Parent = titleBar
+                    end
+                    
                     local title = Instance.new('TextLabel') do 
                         title.BackgroundTransparency = 1
                         title.BorderSizePixel = 0
                         title.Font = 'RobotoCondensed'
                         title.Name = '#title'
-                        title.Position = UDim2.fromOffset(2, 0)
+                        title.Position = UDim2.fromOffset(24, 0)
                         title.RichText = true
                         title.Size = UDim2.new(1, -74, 1, 0)
                         title.Text = 'j'

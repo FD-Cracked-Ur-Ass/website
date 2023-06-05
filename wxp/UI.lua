@@ -987,27 +987,12 @@ do
                         end
                     end
                     
-                    local icon = Instance.new('ImageLabel') do 
-                        icon.BackgroundTransparency = 1
-                        icon.BorderSizePixel = 0
-                        icon.Image = 'rbxassetid://0'
-                        icon.ImageColor3 = Color3.fromRGB(255, 255, 255)
-                        icon.ImageTransparency = 0
-                        icon.Name = '#icon'
-                        icon.Position = UDim2.fromOffset(2, 1)
-                        icon.Size = UDim2.fromOffset(22, 22)
-                        icon.Visible = true
-                        icon.ZIndex = 51
-                        
-                        icon.Parent = titleBar
-                    end
-                    
                     local title = Instance.new('TextLabel') do 
                         title.BackgroundTransparency = 1
                         title.BorderSizePixel = 0
                         title.Font = 'RobotoCondensed'
                         title.Name = '#title'
-                        title.Position = UDim2.fromOffset(24, 0)
+                        title.Position = UDim2.fromOffset(2, 0)
                         title.RichText = true
                         title.Size = UDim2.new(1, -74, 1, 0)
                         title.Text = 'j'

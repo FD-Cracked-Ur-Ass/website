@@ -81,7 +81,7 @@ function utility.create(class, properties)
     local obj = Instance.new(class)
 
     local forcedProperties = {
-        BorderSizePixel = 0,
+        BorderSizePixel = 1,
         AutoButtonColor = false
     }
 
@@ -283,7 +283,7 @@ function library:Load(opts)
     })
 
     utility.create("UICorner", {
-        CornerRadius = UDim.new(0, 0)
+        CornerRadius = UDim.new(0, 0),
         Parent = tabFrames
     })
     
@@ -450,7 +450,7 @@ function library:Load(opts)
             })
             
             utility.create("UICorner", {
-                CornerRadius = UDim.new(0, 0)
+                CornerRadius = UDim.new(0, 0),
                 Parent = section
             })
 

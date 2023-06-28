@@ -81,7 +81,7 @@ function utility.create(class, properties)
     local obj = Instance.new(class)
 
     local forcedProperties = {
-        BorderSizePixel = 0,
+        BorderSizePixel = 1,
         AutoButtonColor = false
     }
 
@@ -115,7 +115,7 @@ end
 
 function utility.ripple(obj)
     local ripple = Instance.new("Frame")
-    Instance.new("UICorner", ripple).CornerRadius = UDim.new(0, 1)
+    Instance.new("UICorner", ripple).CornerRadius = UDim.new(0, 0)
     
     ripple.ZIndex = obj.ZIndex + 1
     ripple.Parent = obj
@@ -249,7 +249,7 @@ function library:Load(opts)
     })
 
     utility.create("UICorner", {
-        CornerRadius = UDim.new(0, 1),
+        CornerRadius = UDim.new(0, 0),
         Parent = main
     })
 
@@ -263,7 +263,7 @@ function library:Load(opts)
 
     
     utility.create("UICorner", {
-        CornerRadius = UDim.new(0, 1),
+        CornerRadius = UDim.new(0, 0),
         Parent = tabs
     })
 
@@ -283,6 +283,7 @@ function library:Load(opts)
     })
 
     utility.create("UICorner", {
+        CornerRadius = UDim.new(0, 0)
         Parent = tabFrames
     })
     
@@ -337,7 +338,7 @@ function library:Load(opts)
         end)
         
         utility.create("UICorner", {
-            CornerRadius = UDim.new(0, 1),
+            CornerRadius = UDim.new(0, 0),
             Parent = tabToggle
         })
 
@@ -449,6 +450,7 @@ function library:Load(opts)
             })
             
             utility.create("UICorner", {
+                CornerRadius = UDim.new(0, 0)
                 Parent = section
             })
 
@@ -543,7 +545,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = button
                 })
 
@@ -601,7 +603,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = icon
                 })
                 
@@ -694,7 +696,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = box
                 })
 
@@ -773,7 +775,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = slider
                 })
                 
@@ -785,7 +787,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = fill
                 })
                 
@@ -912,7 +914,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = dropdown
                 })
                 
@@ -953,7 +955,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = content
                 })
                 
@@ -1758,7 +1760,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = icon
                 })
                 
@@ -1948,7 +1950,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = icon
                 })
                 
@@ -1965,7 +1967,7 @@ function library:Load(opts)
                 picker.Size = UDim2.new(1, -8, 0, picker.AbsoluteSize.X + 24)
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = picker
                 })
                 
@@ -1979,7 +1981,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = saturation
                 })
                 
@@ -1992,7 +1994,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = saturationPicker
                 })
                 
@@ -2005,7 +2007,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = outline
                 })
                 
@@ -2022,7 +2024,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = hueFrame
                 })
                 
@@ -2043,7 +2045,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = outline
                 })
                 
@@ -2064,7 +2066,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = rgb
                 })
                 
@@ -2087,7 +2089,7 @@ function library:Load(opts)
                 picker.Size = UDim2.new(1, -8, 0, 0)
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = hex
                 })
 
@@ -2310,7 +2312,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = icon
                 })
                 
@@ -2368,7 +2370,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = colorPickerIcon
                 })
                 
@@ -2385,7 +2387,7 @@ function library:Load(opts)
                 picker.Size = UDim2.new(1, -8, 0, picker.AbsoluteSize.X + 24)
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = picker
                 })
                 
@@ -2399,7 +2401,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = saturation
                 })
                 
@@ -2412,7 +2414,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = saturationPicker
                 })
                 
@@ -2425,7 +2427,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = outline
                 })
                 
@@ -2442,7 +2444,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = hueFrame
                 })
                 
@@ -2463,7 +2465,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = outline
                 })
                 
@@ -2484,7 +2486,7 @@ function library:Load(opts)
                 })
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = rgb
                 })
                 
@@ -2507,7 +2509,7 @@ function library:Load(opts)
                 picker.Size = UDim2.new(1, -8, 0, 0)
                 
                 utility.create("UICorner", {
-                    CornerRadius = UDim.new(0, 1),
+                    CornerRadius = UDim.new(0, 0),
                     Parent = hex
                 })
                 

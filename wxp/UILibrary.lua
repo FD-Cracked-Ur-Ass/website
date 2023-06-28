@@ -359,7 +359,7 @@ function library:Load(opts)
         
         local column1 = utility.create("ScrollingFrame", {
             Size = UDim2.new(0.5, -3, 1, 0),
-            BackgroundTransparency = 1,
+            BackgroundTransparency = 0.75,
             Active = true,
             ScrollBarThickness = 0,
             CanvasSize = UDim2.new(0, 0, 0, 0),
@@ -378,7 +378,7 @@ function library:Load(opts)
 
         local column2 = utility.create("ScrollingFrame", {
             Size = UDim2.new(0.5, -3, 1, 0),
-            BackgroundTransparency = 1,
+            BackgroundTransparency = 0.75,
             Active = true,
             BackgroundColor3 = Color3.fromRGB(255, 255, 255),
             ScrollBarThickness = 0,

@@ -81,7 +81,7 @@ function utility.create(class, properties)
     local obj = Instance.new(class)
 
     local forcedProperties = {
-        BorderSizePixel = 1,
+        BorderSizePixel = 0,
         AutoButtonColor = false
     }
 

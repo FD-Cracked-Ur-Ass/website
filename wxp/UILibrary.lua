@@ -82,6 +82,7 @@ function utility.create(class, properties)
 
     local forcedProperties = {
         BorderSizePixel = 1,
+	BorderColor3 = Color3.fromRGB(0, 0, 0),
         AutoButtonColor = false
     }
 

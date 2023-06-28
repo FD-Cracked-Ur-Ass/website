@@ -19,7 +19,7 @@ local themes = {
         Section = Color3.fromRGB(20, 20, 20),
         Button = Color3.fromRGB(30, 30, 30),
         ButtonMouseOver = Color3.fromRGB(40, 40, 40),
-        ToggleEnabled = Color3.fromRGB(179, 129, 148),
+        ToggleEnabled = Color3.fromRGB(220,20,60),
         ToggleEnabledMouseOver = Color3.fromRGB(209, 159, 178),
         ToggleDisabled = Color3.fromRGB(30, 30, 30),
         ToggleDisabledMouseOver = Color3.fromRGB(40, 40, 40),
@@ -27,7 +27,7 @@ local themes = {
         BoxFocused = Color3.fromRGB(40, 40, 40),
         Slider = Color3.fromRGB(30, 30, 30),
         SliderMouseOver = Color3.fromRGB(40, 40, 40),
-        SliderFill = Color3.fromRGB(179, 129, 148),
+        SliderFill = Color3.fromRGB(220,20,60),
         SliderFillSliding = Color3.fromRGB(209, 159, 178),
         Dropdown = Color3.fromRGB(30, 30, 30),
         DropdownMouseOver = Color3.fromRGB(40, 40, 40),
@@ -41,7 +41,7 @@ local themes = {
         DropdownContent = Color3.fromRGB(235, 235, 235),
         EnabledText = Color3.fromRGB(40, 40, 40),
         BoxFocused = Color3.fromRGB(215, 215, 215),
-        SliderFill = Color3.fromRGB(179, 129, 148),
+        SliderFill = Color3.fromRGB(220,20,60),
         Box = Color3.fromRGB(225, 225, 225),
         ButtonMouseOver = Color3.fromRGB(215, 215, 215),
         Section = Color3.fromRGB(235, 235, 235),
@@ -49,7 +49,7 @@ local themes = {
         ToggleDisabledMouseOver = Color3.fromRGB(215, 215, 215),
         TabToggleDisabledMouseOver = Color3.fromRGB(235, 235, 235),
         ColorPicker = Color3.fromRGB(235, 235, 235),
-        ToggleEnabled = Color3.fromRGB(179, 129, 148),
+        ToggleEnabled = Color3.fromRGB(220,20,60),
         DisabledText = Color3.fromRGB(75, 75, 75),
         ToggleDisabled = Color3.fromRGB(225, 225, 225),
         TabToggleDisabled = Color3.fromRGB(250, 250, 250),
@@ -82,7 +82,6 @@ function utility.create(class, properties)
 
     local forcedProperties = {
         BorderSizePixel = 1,
-	BorderColor3 = Color3.fromRGB(0, 0, 0),
         AutoButtonColor = false
     }
 
@@ -187,20 +186,20 @@ function utility.format_table(tbl)
     end
 end
 
-local venuslib = utility.create("ScreenGui", {})
+local venuslibEdited = utility.create("ScreenGui", {})
 
 if syn and syn.protect_gui then
-    syn.protect_gui(venuslib)
+    syn.protect_gui(venuslibEdited)
 end
 
-venuslib.Parent = coreGui
+venuslibEdited.Parent = coreGui
 
 library = utility.format_table(library)
 
 inputService.InputBegan:Connect(function(input)
     if input.KeyCode == library.keybind then
         library.toggled = not library.toggled
-        venuslib.Enabled = library.toggled
+        venuslibEdited.Enabled = library.toggled
     end
 end)
 
@@ -223,7 +222,7 @@ function library:Load(opts)
         BackgroundTransparency = 1,
         Position = utility.get_center(sizeX, sizeY),
         BackgroundColor3 = Color3.fromRGB(255, 255, 255),
-        Parent = venuslib
+        Parent = venuslibEdited
     })
 
     utility.create("TextLabel", {

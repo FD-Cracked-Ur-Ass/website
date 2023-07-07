@@ -6,7 +6,7 @@ local coreGui = game:GetService("CoreGui")
 local library = {flags = {}, toggled = true, keybind = Enum.KeyCode.RightShift, dragSpeed = 0.1}
 
 local themes = {
-    Dark = {
+    Custom = {
         TextColor = Color3.fromRGB(255, 255, 255),
         MainFrame = Color3.fromRGB(30, 30, 30),
         TabBackground = Color3.fromRGB(20, 20, 20),
@@ -34,40 +34,11 @@ local themes = {
         DropdownContent = Color3.fromRGB(20, 20, 20),
         ColorPicker = Color3.fromRGB(20, 20, 20),
         ColorPickerBoxes = Color3.fromRGB(30, 30, 30)
-    },
-    Light = {
-        TextColor = Color3.fromRGB(40, 40, 40),
-        Tab = Color3.fromRGB(225, 225, 225),
-        DropdownContent = Color3.fromRGB(235, 235, 235),
-        EnabledText = Color3.fromRGB(40, 40, 40),
-        BoxFocused = Color3.fromRGB(215, 215, 215),
-        SliderFill = Color3.fromRGB(0, 250, 154),
-        Box = Color3.fromRGB(225, 225, 225),
-        ButtonMouseOver = Color3.fromRGB(215, 215, 215),
-        Section = Color3.fromRGB(235, 235, 235),
-        Button = Color3.fromRGB(225, 225, 225),
-        ToggleDisabledMouseOver = Color3.fromRGB(215, 215, 215),
-        TabToggleDisabledMouseOver = Color3.fromRGB(235, 235, 235),
-        ColorPicker = Color3.fromRGB(235, 235, 235),
-        ToggleEnabled = Color3.fromRGB(0, 250, 154),
-        DisabledText = Color3.fromRGB(75, 75, 75),
-        ToggleDisabled = Color3.fromRGB(225, 225, 225),
-        TabToggleDisabled = Color3.fromRGB(250, 250, 250),
-        SliderFillSliding = Color3.fromRGB(0, 200, 100),
-        MainFrame = Color3.fromRGB(225, 225, 225),
-        SliderMouseOver = Color3.fromRGB(215, 215, 215),
-        Dropdown = Color3.fromRGB(225, 225, 225),
-        DropdownMouseOver = Color3.fromRGB(215, 215, 215),
-        ToggleEnabledMouseOver = Color3.fromRGB(0, 200, 100),
-        ColorPickerBoxes = Color3.fromRGB(225, 225, 225),
-        TabBackground = Color3.fromRGB(235, 235, 235),
-        TabToggleEnabled = Color3.fromRGB(225, 225, 225),
-        Slider = Color3.fromRGB(225, 225, 225)
     }
 }
 
 local themeObjects = {}
-for i, v in next, themes.Dark do
+for i, v in next, themes.Custom do
     themeObjects[i] = {}
 end
 
@@ -82,7 +53,7 @@ function utility.create(class, properties)
 
     local forcedProperties = {
         BorderSizePixel = 1,
-        BorderColor3 = Color3.fromRGB(0, 0, 0),
+        BorderColor3 = Color3.fromRGB(220,20,60),
         AutoButtonColor = false
     }
 
@@ -209,7 +180,7 @@ function library:Load(opts)
     local name = options.name
     local sizeX = options.sizeX or 440
     local sizeY = options.sizeY or 480
-    local theme = themes[options.theme] or themes.Dark
+    local theme = themes[options.theme] or themes.Custom
     local colorOverrides = options.colorOverrides or {}
 
     for i, v in next, colorOverrides do

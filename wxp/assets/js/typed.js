@@ -1,5 +1,5 @@
 new Typed('#typed', {
-    strings: ["I Can't Code"],
+    strings: ['I Can NOT Code'],
     typeSpeed: 120,
     backSpeed: 500,
     backDelay: 1000,

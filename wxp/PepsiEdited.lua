@@ -1,6 +1,6 @@
 local library = {
-	Version = "0.1",
-	WorkspaceName = "Poison",
+	Version = "V1.0",
+	WorkspaceName = "Vyon",
 	flags = {},
 	signals = {},
 	objects = {},
@@ -15,7 +15,7 @@ local library = {
 		easingDirection = Enum.EasingDirection.Out
 	},
 	colors = {
-		main = Color3.fromRGB(170, 255, 5),
+		main = Color3.fromRGB(83, 22, 149),
 		background = Color3.fromRGB(40, 40, 40),
 		outerBorder = Color3.fromRGB(15, 15, 15),
 		innerBorder = Color3.fromRGB(73, 63, 73),

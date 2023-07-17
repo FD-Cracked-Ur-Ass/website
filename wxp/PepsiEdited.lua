@@ -1,5 +1,5 @@
 local library = {
-	Version = "0.36",
+	Version = "1",
 	WorkspaceName = "Edited Pepsi Lib",
 	flags = {},
 	signals = {},
@@ -15,7 +15,7 @@ local library = {
 		easingDirection = Enum.EasingDirection.Out
 	},
 	colors = {
-		main = Color3.fromRGB(255, 39, 39),
+		main = Color3.fromRGB(170, 255, 0),
 		background = Color3.fromRGB(40, 40, 40),
 		outerBorder = Color3.fromRGB(15, 15, 15),
 		innerBorder = Color3.fromRGB(73, 63, 73),
@@ -7217,3 +7217,5 @@ library.AddWindow = library.CreateWindow
 library.Window = library.CreateWindow
 library.W = library.CreateWindow
 return library, library_flags, library.subs
+Filter model
+Properties

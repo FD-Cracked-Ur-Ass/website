@@ -1,5 +1,5 @@
 local library = {
-	Version = "1",
+	Version = "0.36",
 	WorkspaceName = "Edited Pepsi Lib",
 	flags = {},
 	signals = {},

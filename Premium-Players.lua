@@ -1,5 +1,5 @@
 local list = {
-  ["2226003580"] = true,
+  2226003580,
 };
 
 return list

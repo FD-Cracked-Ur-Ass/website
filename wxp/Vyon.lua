@@ -50,7 +50,7 @@ local Wait = Library.subs.Wait
 local Vyon = Library:CreateWindow({
     Name = "｜Vyon｜V1.0｜",
     Themeable = {
-    Info = "@bleedoutnigga/wxp"
+    Info = "@bleedoutnigga(i cant code)"
     }
 })
 

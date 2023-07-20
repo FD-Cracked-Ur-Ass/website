@@ -48,18 +48,18 @@ local Library = loadstring(game:HttpGet("https://fourdevils.gq/wxp/PepsiEdited.l
 local Wait = Library.subs.Wait
 
 local Vyon = Library:CreateWindow({
-    Name = "｜Vyon｜V1.0｜",
+    Name = "Vyon V1.0",
     Themeable = {
     Info = "@bleedoutnigga(i cant code)"
     }
 })
 
 local MainTab = Vyon:CreateTab({
-    Name = "｜Main｜"
+    Name = "Main"
 })
 
 local MiscTab = Vyon:CreateTab({
-    Name = "｜Misc｜"
+    Name = "Misc"
 })
 
 local SilentSection = MainTab:CreateSection({
